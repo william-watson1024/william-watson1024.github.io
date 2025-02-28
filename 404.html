@@ -160,7 +160,7 @@
   const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
 
   window.pjax = new Pjax({
-    elements: 'a:not([target="_blank"]):not([href="/movies/"])',
+    elements: 'a:not([target="_blank"]):not([href="/movies/"]):not([href="/artitalk/"])',
     selectors: pjaxSelectors,
     cacheBust: false,
     analytics: false,
