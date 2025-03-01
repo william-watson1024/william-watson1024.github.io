@@ -5967,6 +5967,10 @@ blockquote.pullquote.right {
   height: 100%;
   background-color: rgba(0,0,0,0.7);
   content: '';
+  background-image: url("https://i.miji.bid/2025/03/01/647aa4e2bc1596254333f2f736678620.png");
+  background-size: 100% 100%;
+  background-size: cover;
+  background-repeat: no-repeat center center;
 }
 [data-theme='dark'] .container code {
   background: #2c2c2c;
@@ -5978,6 +5982,15 @@ blockquote.pullquote.right {
   -webkit-box-shadow: none;
   box-shadow: none;
 }
+[data-theme='dark'] .container .note {
+  background: #222422;
+}
+[data-theme='dark'] .container h2 {
+  color: #fff;
+}
+[data-theme='dark'] .container p {
+  color: rgba(255,255,255,0.7);
+}
 [data-theme='dark'] .container .note code {
   background: rgba(27,31,35,0.05);
 }
@@ -5988,6 +6001,10 @@ blockquote.pullquote.right {
   border-color: #696969;
   background-color: #525252;
   color: #e2f1ff;
+}
+[data-theme='dark'] #page-header,
+[data-theme='dark'] #page-header:before {
+  background: none !important;
 }
 [data-theme='dark'] #page-header.nav-fixed > #nav,
 [data-theme='dark'] #page-header.not-top-img > #nav {
