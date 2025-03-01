@@ -5965,7 +5965,7 @@ blockquote.pullquote.right {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.7);
+  background-color: rgba(0,0,0,0);
   content: '';
   background-image: url("https://i.miji.bid/2025/03/01/647aa4e2bc1596254333f2f736678620.png");
   background-size: 100% 100%;
