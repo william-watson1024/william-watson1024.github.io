@@ -190,12 +190,12 @@
 
     const valineConfig = {
       el: '#vcomment',
-      appId: 'I7VbVCkRTv27XF2PxvaMG5BL-MdYXbMMI',
-      appKey: 'SXBKBNVhMYzRemqjcgyXec02',
+      appId: 'Z7QznhjTLEqRlaYYnPKl10v1-MdYXbMMI',
+      appKey: 'nx1MJzlMV5i2RsTSBuFS3y39',
       avatar: 'monsterid',
-      serverURLs: '',
+      serverURLs: 'https://z7qznhjt.api.lncldglobal.com',
       emojiMaps: "",
-      visitor: true,
+      visitor: false,
       ...option,
       path: isShuoshuo ? path : (option && option.path) || window.location.pathname
     }
@@ -296,13 +296,13 @@
   }
 
   const getComment = ele => {
-    const serverURL = 'https://I7VbVCkR.api.lncldglobal.com'
+    const serverURL = 'https://z7qznhjt.api.lncldglobal.com'
 
     var settings = {
       "method": "GET",
       "headers": {
-        "X-LC-Id": 'I7VbVCkRTv27XF2PxvaMG5BL-MdYXbMMI',
-        "X-LC-Key": 'SXBKBNVhMYzRemqjcgyXec02',
+        "X-LC-Id": 'Z7QznhjTLEqRlaYYnPKl10v1-MdYXbMMI',
+        "X-LC-Key": 'nx1MJzlMV5i2RsTSBuFS3y39',
         "Content-Type": "application/json"
       },
     }
