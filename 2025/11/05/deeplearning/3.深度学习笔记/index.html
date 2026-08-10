@@ -1,0 +1,769 @@
+<!DOCTYPE html><html lang="ch-ZH" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>深度学习的基础笔记 | EMinimalism</title><meta name="author" content="William Watson"><meta name="copyright" content="William Watson"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="深度学习基础笔记，可以不看">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习的基础笔记">
+<meta property="og:url" content="http://example.com/2025/11/05/deeplearning/3.%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="EMinimalism">
+<meta property="og:description" content="深度学习基础笔记，可以不看">
+<meta property="og:locale" content="ch_ZH">
+<meta property="og:image" content="https://i.mji.rip/2025/11/05/c3c13228b3e105d1eae84e45fe7b7bfa.jpeg">
+<meta property="article:published_time" content="2025-11-05T23:25:00.000Z">
+<meta property="article:modified_time" content="2026-08-10T14:37:27.899Z">
+<meta property="article:author" content="William Watson">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.mji.rip/2025/11/05/c3c13228b3e105d1eae84e45fe7b7bfa.jpeg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "深度学习的基础笔记",
+  "url": "http://example.com/2025/11/05/deeplearning/3.%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/",
+  "image": "https://i.mji.rip/2025/11/05/c3c13228b3e105d1eae84e45fe7b7bfa.jpeg",
+  "datePublished": "2025-11-05T23:25:00.000Z",
+  "dateModified": "2026-08-10T14:37:27.899Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "William Watson",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="http://example.com/2025/11/05/deeplearning/3.%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          const hour = new Date().getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (theme === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else theme === 'light' ? activateLightMode() : activateDarkMode()
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: {"appId":"RMK3OR5KO4","apiKey":"317446910305619518d9744f4bdf1b0b","indexName":"hexo_NAME","hitsPerPage":6,"languages":{"input_placeholder":"搜索","hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，耗时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'medium_zoom',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '深度学习的基础笔记',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style type="text/css"> #universe {  display: block; position: fixed; margin: 0; padding: 0; border: 0; outline: 0; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; } </style><style type="text/css">#toggle-sidebar {bottom: 80px}</style><script src="/live2d-widget/autoload.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(https://i.miji.bid/2025/03/01/6f6ffd1df6f363f52fd90b465cca8175.jpeg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">29</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/shuoshuo/"><i class="fa-fw fas fa-comment"></i><span> 树洞</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fas fa-fax"></i><span> 微语</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/poem/"><i class="fa-fw fas fa-feather"></i><span> 诗云</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-seedling"></i><span> 豆瓣</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li><li><a class="site-page child" href="/books/"><i class="fa-fw fas fa-book"></i><span> 读书</span></a></li><li><a class="site-page child" href="/songs/"><i class="fa-fw fas fa-music"></i><span> 歌单</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fas fa-gamepad"></i><span> 游戏</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://i.mji.rip/2025/11/05/c3c13228b3e105d1eae84e45fe7b7bfa.jpeg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">EMinimalism</span></a><a class="nav-page-title" href="/"><span class="site-name">深度学习的基础笔记</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/shuoshuo/"><i class="fa-fw fas fa-comment"></i><span> 树洞</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk/"><i class="fa-fw fas fa-fax"></i><span> 微语</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/poem/"><i class="fa-fw fas fa-feather"></i><span> 诗云</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-seedling"></i><span> 豆瓣</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li><li><a class="site-page child" href="/books/"><i class="fa-fw fas fa-book"></i><span> 读书</span></a></li><li><a class="site-page child" href="/songs/"><i class="fa-fw fas fa-music"></i><span> 歌单</span></a></li><li><a class="site-page child" href="/games/"><i class="fa-fw fas fa-gamepad"></i><span> 游戏</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">深度学习的基础笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-11-05T23:25:00.000Z" title="发表于 2025-11-05 23:25:00">2025-11-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-08-10T14:37:27.899Z" title="更新于 2026-08-10 14:37:27">2026-08-10</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/python/">python</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">3.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>13分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="数学基础"><a href="#数学基础" class="headerlink" title="数学基础"></a>数学基础</h1><h2 id="0-1-线性代数基础"><a href="#0-1-线性代数基础" class="headerlink" title="0.1 线性代数基础"></a>0.1 线性代数基础</h2><ol>
+<li><p>向量、矩阵、张量</p>
+<ul>
+<li>向量（Vector）：一维数组，表示一个数值集合，例如 <code>[x1, x2, x3]</code>。常用于表示特征或输入数据。</li>
+<li>矩阵（Matrix）：二维数组，行表示样本，列表示特征，或用于线性变换。</li>
+<li>张量（Tensor）：多维数组，三维或更高维度。神经网络中的数据（图片、视频等）通常表示为张量。</li>
+</ul>
+</li>
+<li><p>矩阵运算</p>
+<ul>
+<li>加法&#x2F;减法&#x2F;数乘：矩阵的元素逐一进行运算。</li>
+<li>矩阵乘法：不同于逐元素乘法，是线性变换的核心。若 ( A ) 是 ( m \times n )，( B ) 是 ( n \times p )，则 ( AB ) 是 ( m \times p )。</li>
+<li>转置：交换行和列，记作 ( A^T )。</li>
+<li>逆矩阵：如果 ( A^{-1} ) 存在，满足 ( A A^{-1} &#x3D; I )（单位矩阵）。</li>
+</ul>
+</li>
+<li><p>特殊矩阵</p>
+<ul>
+<li>单位矩阵 (I)：对角线为 1，其他为 0，在乘法中相当于“1”。</li>
+<li>对角矩阵：只有对角线有值，其他元素为 0。</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>核心理解：矩阵是数据和线性变换的表示方式，神经网络中每一层的权重本质上就是一个矩阵。</p>
+</blockquote>
+<hr>
+<h2 id="0-2-微积分基础"><a href="#0-2-微积分基础" class="headerlink" title="0.2 微积分基础"></a>0.2 微积分基础</h2><ol>
+<li><p>函数导数与偏导数</p>
+<ul>
+<li>一元函数导数：表示函数在某点的瞬时变化率，图像上就是切线斜率。</li>
+<li>多元函数偏导数：当函数有多个输入变量时，偏导数表示某一变量变化时对输出的影响。</li>
+</ul>
+</li>
+<li><p>链式法则（Chain Rule）</p>
+<ul>
+<li>当一个函数由多个函数嵌套组成时，求导需要逐层传递梯度。例如神经网络的层与层之间梯度传递就是链式法则的应用。</li>
+</ul>
+</li>
+<li><p>梯度与梯度下降</p>
+<ul>
+<li>梯度：向量，指向函数上升最快方向。</li>
+<li>梯度下降：沿梯度反方向更新参数，使损失函数最小化，是神经网络训练的核心方法。</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>核心理解：神经网络训练就是通过梯度下降，不断调整参数，让预测结果逼近真实值。</p>
+</blockquote>
+<hr>
+<h2 id="0-3-概率与统计基础"><a href="#0-3-概率与统计基础" class="headerlink" title="0.3 概率与统计基础"></a>0.3 概率与统计基础</h2><ol>
+<li><p>基本统计量</p>
+<ul>
+<li>均值（Mean）：数据的平均水平。</li>
+<li>方差（Variance）：数据的离散程度。</li>
+<li>标准差（Std）：方差的平方根，更直观表示离散程度。</li>
+</ul>
+</li>
+<li><p>概率分布</p>
+<ul>
+<li>正态分布：数据集中在均值附近，呈钟型曲线。</li>
+<li>均匀分布：每个值出现概率相等，分布平坦。</li>
+</ul>
+</li>
+<li><p>损失函数基础</p>
+<ul>
+<li>均方误差 MSE：预测值与真实值差的平方平均，适合回归任务。</li>
+<li>交叉熵 Cross-Entropy：衡量分类预测的概率分布与真实分布差距，适合分类任务。</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>核心理解：统计学帮助我们理解数据分布和误差性质，损失函数则是衡量模型预测与真实数据差距的标准。</p>
+</blockquote>
+<h2 id="0-4-用numpy实现线性回归"><a href="#0-4-用numpy实现线性回归" class="headerlink" title="0.4 用numpy实现线性回归"></a>0.4 用numpy实现线性回归</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成 100 个样本</span></span><br><span class="line">np.random.seed(<span class="number">42</span>)  <span class="comment"># 设置随机种子以保证结果可复现</span></span><br><span class="line">x = np.random.rand(<span class="number">100</span>, <span class="number">1</span>) * <span class="number">10</span>  <span class="comment"># 生成 0~10 之间的随机数作为输入数据</span></span><br><span class="line">y = <span class="number">2</span> * x + <span class="number">3</span> + np.random.randn(<span class="number">100</span>, <span class="number">1</span>)  <span class="comment"># 生成线性关系的输出数据，并加上噪声</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可视化数据</span></span><br><span class="line">plt.scatter(x, y)  <span class="comment"># 绘制散点图</span></span><br><span class="line">plt.xlabel(<span class="string">&quot;x&quot;</span>)  <span class="comment"># x 轴标签</span></span><br><span class="line">plt.ylabel(<span class="string">&quot;y&quot;</span>)  <span class="comment"># y 轴标签</span></span><br><span class="line">plt.title(<span class="string">&quot;Data Scatter&quot;</span>)  <span class="comment"># 图标题</span></span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化权重和偏置</span></span><br><span class="line">w = np.random.randn(<span class="number">1</span>)  <span class="comment"># 随机初始化权重</span></span><br><span class="line">b = np.random.randn(<span class="number">1</span>)  <span class="comment"># 随机初始化偏置</span></span><br><span class="line">lr = <span class="number">0.01</span>  <span class="comment"># 学习率</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义前向传播函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">return</span> w * x + b  <span class="comment"># 线性模型</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义均方误差损失函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">mse_loss</span>(<span class="params">y_hat, y</span>):</span><br><span class="line">    <span class="keyword">return</span> np.mean((y_hat - y)  <span class="number">2</span>)  <span class="comment"># 计算均方误差</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义梯度计算函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">gradients</span>(<span class="params">x, y, y_hat</span>):</span><br><span class="line">    dw = (<span class="number">2</span> / x.shape[<span class="number">0</span>]) * np.<span class="built_in">sum</span>((y_hat - y) * x)  <span class="comment"># 计算权重的梯度</span></span><br><span class="line">    db = (<span class="number">2</span> / x.shape[<span class="number">0</span>]) * np.<span class="built_in">sum</span>(y_hat - y)  <span class="comment"># 计算偏置的梯度</span></span><br><span class="line">    <span class="keyword">return</span> dw, db</span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练模型</span></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1000</span>):  <span class="comment"># 迭代 1000 次</span></span><br><span class="line">    y_hat = forward(x)  <span class="comment"># 前向传播，计算预测值</span></span><br><span class="line">    loss = mse_loss(y_hat, y)  <span class="comment"># 计算损失</span></span><br><span class="line">    </span><br><span class="line">    dw, db = gradients(x, y, y_hat)  <span class="comment"># 计算梯度</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 更新权重和偏置</span></span><br><span class="line">    w -= lr * dw</span><br><span class="line">    b -= lr * db</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 每 100 次迭代打印一次损失和参数</span></span><br><span class="line">    <span class="keyword">if</span> epoch % <span class="number">100</span> == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Epoch <span class="subst">&#123;epoch&#125;</span>, Loss: <span class="subst">&#123;loss:<span class="number">.4</span>f&#125;</span>, w: <span class="subst">&#123;w[<span class="number">0</span>]:<span class="number">.4</span>f&#125;</span>, b: <span class="subst">&#123;b[<span class="number">0</span>]:<span class="number">.4</span>f&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可视化拟合结果</span></span><br><span class="line">plt.scatter(x, y)  <span class="comment"># 绘制原始数据的散点图</span></span><br><span class="line">plt.plot(x, forward(x), color=<span class="string">&#x27;red&#x27;</span>, label=<span class="string">&#x27;Fitted line&#x27;</span>)  <span class="comment"># 绘制拟合的直线</span></span><br><span class="line">plt.xlabel(<span class="string">&quot;x&quot;</span>)  <span class="comment"># x 轴标签</span></span><br><span class="line">plt.ylabel(<span class="string">&quot;y&quot;</span>)  <span class="comment"># y 轴标签</span></span><br><span class="line">plt.title(<span class="string">&quot;Linear Regression Fit&quot;</span>)  <span class="comment"># 图标题</span></span><br><span class="line">plt.legend()  <span class="comment"># 显示图例</span></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<h1 id="神经网络基础"><a href="#神经网络基础" class="headerlink" title="神经网络基础"></a>神经网络基础</h1><h2 id="神经网络概念"><a href="#神经网络概念" class="headerlink" title="神经网络概念"></a>神经网络概念</h2><h3 id="神经元（Neuron）"><a href="#神经元（Neuron）" class="headerlink" title="神经元（Neuron）"></a>神经元（Neuron）</h3><ul>
+<li>模拟生物神经元的计算单元。</li>
+<li>输入：一组特征 (x_1, x_2, \dots, x_n)。</li>
+<li>权重：每个输入对应一个权重 (w_1, w_2, \dots, w_n)。</li>
+<li>偏置：一个额外的偏移量 (b)。</li>
+<li>输出：先求线性组合，再通过激活函数：<br>  [<br>  z &#x3D; \sum_{i} w_i x_i + b<br>  ]<br>  [<br>  a &#x3D; \sigma(z)<br>  ]</li>
+</ul>
+<h3 id="层（Layer）"><a href="#层（Layer）" class="headerlink" title="层（Layer）"></a>层（Layer）</h3><ul>
+<li>神经元的集合。</li>
+<li>全连接层（Fully Connected &#x2F; Dense Layer）：<br>  每个神经元与上一层的所有神经元相连。<br>  [<br>  \mathbf{a}^{[l]} &#x3D; \sigma(\mathbf{W}^{[l]} \mathbf{a}^{[l-1]} + \mathbf{b}^{[l]})<br>  ]</li>
+</ul>
+<h3 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h3><ul>
+<li><p>输入层 → 隐藏层 → 输出层。</p>
+</li>
+<li><p>例：2 层全连接网络</p>
+<ul>
+<li>输入层：特征数 (n)</li>
+<li>隐藏层：(m) 个神经元</li>
+<li>输出层：分类数 (k)</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="激活函数（Activation-Function）"><a href="#激活函数（Activation-Function）" class="headerlink" title="激活函数（Activation Function）"></a>激活函数（Activation Function）</h2><table>
+<thead>
+<tr>
+<th>激活函数</th>
+<th>公式</th>
+<th>优点</th>
+<th>缺点</th>
+<th>使用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Sigmoid</td>
+<td>( \sigma(x) &#x3D; \frac{1}{1 + e^{-x}} )</td>
+<td>输出范围 (0,1)，可表示概率</td>
+<td>梯度消失，训练慢</td>
+<td>二分类输出层</td>
+</tr>
+<tr>
+<td>ReLU</td>
+<td>( f(x) &#x3D; \max(0,x) )</td>
+<td>计算快，梯度稳定</td>
+<td>( x &lt; 0 ) 梯度为 0，死神经元</td>
+<td>隐藏层最常用</td>
+</tr>
+<tr>
+<td>Tanh</td>
+<td>( \tanh(x) &#x3D; \frac{e^x - e^{-x}}{e^x + e^{-x}} )</td>
+<td>输出范围 (-1,1)，均值为 0，收敛快</td>
+<td>梯度消失</td>
+<td>隐藏层，可代替 Sigmoid</td>
+</tr>
+</tbody></table>
+<h2 id="损失函数（Loss-Function）"><a href="#损失函数（Loss-Function）" class="headerlink" title="损失函数（Loss Function）"></a>损失函数（Loss Function）</h2><p>衡量模型预测 ((\hat{y})) 与真实标签 ((y)) 的差距。</p>
+<ol>
+<li><p>均方误差 MSE（主要用于回归）<br> [<br> L &#x3D; \frac{1}{N} \sum_{i&#x3D;1}^{N} (\hat{y}_i - y_i)^2<br> ]</p>
+</li>
+<li><p>交叉熵 Cross-Entropy（主要用于分类）<br> [<br> L &#x3D; - \sum_{i&#x3D;1}^{N} y_i \log \hat{y}_i<br> ]</p>
+</li>
+</ol>
+<hr>
+<h2 id="优化与梯度下降（GD-SGD）"><a href="#优化与梯度下降（GD-SGD）" class="headerlink" title="优化与梯度下降（GD &#x2F; SGD）"></a>优化与梯度下降（GD &#x2F; SGD）</h2><ul>
+<li>目标：最小化损失函数 ((L))  </li>
+<li>梯度下降（GD）：<br>  [<br>  \theta \gets \theta - \eta \frac{\partial L}{\partial \theta}<br>  ]</li>
+<li>随机梯度下降（SGD）：  <ul>
+<li>每次用一个样本更新参数，训练更快，增加随机性。</li>
+</ul>
+</li>
+<li>学习率 ((\eta))：  <ul>
+<li>太大 → 发散  </li>
+<li>太小 → 收敛慢</li>
+</ul>
+</li>
+</ul>
+<h2 id="用numpy实现一个简单的前馈神经网络"><a href="#用numpy实现一个简单的前馈神经网络" class="headerlink" title="用numpy实现一个简单的前馈神经网络"></a>用numpy实现一个简单的前馈神经网络</h2><p>假设：输入 2 个特征，隐藏层 3 个神经元，输出 2 个类别。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据示例（4 个样本，2 个特征）</span></span><br><span class="line">X = np.array([[<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">1</span>]])</span><br><span class="line">y = np.array([[<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>]])  <span class="comment"># one-hot 编码</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 网络参数初始化</span></span><br><span class="line">np.random.seed(<span class="number">42</span>)</span><br><span class="line">W1 = np.random.randn(<span class="number">2</span>,<span class="number">3</span>)</span><br><span class="line">b1 = np.zeros((<span class="number">1</span>,<span class="number">3</span>))</span><br><span class="line">W2 = np.random.randn(<span class="number">3</span>,<span class="number">2</span>)</span><br><span class="line">b2 = np.zeros((<span class="number">1</span>,<span class="number">2</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 激活函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">sigmoid</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> / (<span class="number">1</span> + np.exp(-x))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">softmax</span>(<span class="params">x</span>):</span><br><span class="line">    exp_x = np.exp(x - np.<span class="built_in">max</span>(x, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>))</span><br><span class="line">    <span class="keyword">return</span> exp_x / exp_x.<span class="built_in">sum</span>(axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 前向传播</span></span><br><span class="line">Z1 = X @ W1 + b1</span><br><span class="line">A1 = sigmoid(Z1)</span><br><span class="line">Z2 = A1 @ W2 + b2</span><br><span class="line">A2 = softmax(Z2)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;输出概率:\n&quot;</span>, A2)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>这里实现了：</p>
+<ul>
+<li>输入 → 隐藏层（sigmoid） → 输出层（softmax）</li>
+<li>输出为每个类别的概率</li>
+</ul>
+</li>
+</ul>
+<p> 好的，我们来把卷积神经网络（CNN, Convolutional Neural Network）基础梳理清楚，风格和你之前的全连接网络笔记类似。</p>
+<hr>
+<h1 id="卷积神经网络基础"><a href="#卷积神经网络基础" class="headerlink" title="卷积神经网络基础"></a>卷积神经网络基础</h1><h2 id="卷积层（Convolutional-Layer）"><a href="#卷积层（Convolutional-Layer）" class="headerlink" title="卷积层（Convolutional Layer）"></a>卷积层（Convolutional Layer）</h2><h3 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h3><ul>
+<li>卷积核（Kernel &#x2F; Filter）：一个小矩阵（如 (3 \times 3) 或 (5 \times 5)），用来提取局部特征。</li>
+<li>输入图像：通常是二维（灰度）或三维（彩色 RGB）数组。</li>
+<li>卷积操作：滑动卷积核，计算局部区域的加权和：<br>  [<br>  Z[i,j] &#x3D; \sum_{m}\sum_{n} X[i+m, j+n] \cdot K[m,n] + b<br>  ]</li>
+<li>输出特征图（Feature Map）：卷积后得到的结果。</li>
+<li>参数共享：同一个卷积核在整个输入上滑动，减少了参数数量。</li>
+</ul>
+<h3 id="卷积层参数"><a href="#卷积层参数" class="headerlink" title="卷积层参数"></a>卷积层参数</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>核大小（kernel size）</td>
+<td>如 (3 \times 3), (5 \times 5)</td>
+</tr>
+<tr>
+<td>步长（stride）</td>
+<td>卷积核滑动的步长</td>
+</tr>
+<tr>
+<td>填充（padding）</td>
+<td>输入边界填充，使输出尺寸可控（valid &#x2F; same）</td>
+</tr>
+<tr>
+<td>通道数（channels）</td>
+<td>输入通道数 &#x2F; 输出特征图数</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="激活函数"><a href="#激活函数" class="headerlink" title="激活函数"></a>激活函数</h2><p>卷积层输出一般也会经过非线性激活函数，例如：</p>
+<ul>
+<li>ReLU：( f(x) &#x3D; \max(0,x) )<br>  → 保持稀疏性、加快训练</li>
+</ul>
+<hr>
+<h2 id="池化层（Pooling-Layer）"><a href="#池化层（Pooling-Layer）" class="headerlink" title="池化层（Pooling Layer）"></a>池化层（Pooling Layer）</h2><ul>
+<li>作用：下采样，减少计算量和过拟合，同时保留主要特征。</li>
+<li>常见类型：<ul>
+<li>最大池化（Max Pooling）：取局部最大值</li>
+<li>平均池化（Avg Pooling）：取局部平均值</li>
+</ul>
+</li>
+<li>参数：<ul>
+<li>池化窗口大小（如 (2 \times 2)）</li>
+<li>步长（通常等于窗口大小）</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="全连接层（Fully-Connected-Layer）"><a href="#全连接层（Fully-Connected-Layer）" class="headerlink" title="全连接层（Fully Connected Layer）"></a>全连接层（Fully Connected Layer）</h2><ul>
+<li>卷积层 + 池化层提取特征后，通常通过全连接层进行分类。</li>
+<li>输入为扁平化的特征向量：<br>  [<br>  \mathbf{a}^{[l]} &#x3D; \sigma(\mathbf{W}^{[l]} \mathbf{a}^{[l-1]} + \mathbf{b}^{[l]})<br>  ]</li>
+</ul>
+<h2 id="卷积神经网络结构示例"><a href="#卷积神经网络结构示例" class="headerlink" title="卷积神经网络结构示例"></a>卷积神经网络结构示例</h2><p>典型 CNN 结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">输入图像 (32x32x3)</span><br><span class="line">   ↓</span><br><span class="line">卷积层 (5x5x6) + ReLU</span><br><span class="line">   ↓</span><br><span class="line">池化层 (2x2) </span><br><span class="line">   ↓</span><br><span class="line">卷积层 (5x5x16) + ReLU</span><br><span class="line">   ↓</span><br><span class="line">池化层 (2x2)</span><br><span class="line">   ↓</span><br><span class="line">扁平化</span><br><span class="line">   ↓</span><br><span class="line">全连接层 (120)</span><br><span class="line">   ↓</span><br><span class="line">全连接层 (84)</span><br><span class="line">   ↓</span><br><span class="line">输出层 (10)</span><br></pre></td></tr></table></figure>
+
+<p>这个就是经典的 LeNet-5 架构。</p>
+<table>
+<thead>
+<tr>
+<th>层</th>
+<th>输出形状</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>输入</td>
+<td>32×32×3</td>
+</tr>
+<tr>
+<td>卷积1</td>
+<td>28×28×6</td>
+</tr>
+<tr>
+<td>池化1</td>
+<td>14×14×6</td>
+</tr>
+<tr>
+<td>卷积2</td>
+<td>10×10×16</td>
+</tr>
+<tr>
+<td>池化2</td>
+<td>5×5×16</td>
+</tr>
+<tr>
+<td>扁平化</td>
+<td>400</td>
+</tr>
+<tr>
+<td>全连接1</td>
+<td>120</td>
+</tr>
+<tr>
+<td>全连接2</td>
+<td>84</td>
+</tr>
+<tr>
+<td>输出</td>
+<td>10</td>
+</tr>
+</tbody></table>
+<h2 id="卷积神经网络各层输出公式"><a href="#卷积神经网络各层输出公式" class="headerlink" title="卷积神经网络各层输出公式"></a>卷积神经网络各层输出公式</h2><h3 id="1-卷积层-Convolution-Layer"><a href="#1-卷积层-Convolution-Layer" class="headerlink" title="1. 卷积层 (Convolution Layer)"></a>1. 卷积层 (Convolution Layer)</h3><p>[<br>\text{Conv输出} &#x3D; \left( \frac{a - m + 2p}{s} + 1 \right) \times \left( \frac{b - n + 2p}{s} + 1 \right) \times k<br>]</p>
+<ul>
+<li>(a, b, c)：输入特征图尺寸  </li>
+<li>(m, n, k)：卷积核尺寸和数量  </li>
+<li>(s)：步长（stride）  </li>
+<li>(p)：填充（padding）</li>
+</ul>
+<hr>
+<h3 id="2-池化层-Pooling-Layer"><a href="#2-池化层-Pooling-Layer" class="headerlink" title="2. 池化层 (Pooling Layer)"></a>2. 池化层 (Pooling Layer)</h3><p>[<br>\text{Pool输出} &#x3D; \frac{a_\text{in}}{s_p} \times \frac{b_\text{in}}{s_p} \times c_\text{in}<br>]</p>
+<ul>
+<li>(a_\text{in}, b_\text{in}, c_\text{in})：输入特征图尺寸  </li>
+<li>(s_p)：池化窗口大小（stride通常等于窗口大小）</li>
+</ul>
+<hr>
+<h3 id="3-扁平化层-Flatten-Layer"><a href="#3-扁平化层-Flatten-Layer" class="headerlink" title="3. 扁平化层 (Flatten Layer)"></a>3. 扁平化层 (Flatten Layer)</h3><p>[<br>\text{Flatten输出} &#x3D; a_\text{in} \cdot b_\text{in} \cdot c_\text{in}<br>]</p>
+<ul>
+<li>将多维输入展开为一维向量</li>
+</ul>
+<hr>
+<h3 id="4-全连接层-Fully-Connected-Layer"><a href="#4-全连接层-Fully-Connected-Layer" class="headerlink" title="4. 全连接层 (Fully Connected Layer)"></a>4. 全连接层 (Fully Connected Layer)</h3><p>[<br>\text{FC输出} &#x3D; n_\text{out} \quad (\text{输入向量长度：} n_\text{in})<br>]</p>
+<ul>
+<li>(n_\text{in})：输入向量长度  </li>
+<li>(n_\text{out})：输出向量长度</li>
+</ul>
+<hr>
+<h3 id="5-输出层-Output-Layer"><a href="#5-输出层-Output-Layer" class="headerlink" title="5. 输出层 (Output Layer)"></a>5. 输出层 (Output Layer)</h3><p>[<br>\text{Output输出} &#x3D; K \quad (\text{类别数})<br>]</p>
+<ul>
+<li>(K)：分类任务中的类别数</li>
+</ul>
+<hr>
+<h1 id="递归神经网络基础（RNN）"><a href="#递归神经网络基础（RNN）" class="headerlink" title="递归神经网络基础（RNN）"></a>递归神经网络基础（RNN）</h1><h2 id="1-RNN-概念"><a href="#1-RNN-概念" class="headerlink" title="1. RNN 概念"></a>1. RNN 概念</h2><ul>
+<li>RNN 用于处理 序列数据（如时间序列、文本、语音）  </li>
+<li>每个时间步的输出不仅依赖当前输入，还依赖 上一时刻隐藏状态</li>
+</ul>
+<h3 id="递归单元公式"><a href="#递归单元公式" class="headerlink" title="递归单元公式"></a>递归单元公式</h3><p>隐藏状态更新：<br>[<br>h_t &#x3D; \sigma_h \big( W_{xh} x_t + W_{hh} h_{t-1} + b_h \big)<br>]</p>
+<ul>
+<li>(x_t)：当前时间步输入  </li>
+<li>(h_{t-1})：上一时间步隐藏状态  </li>
+<li>(W_{xh}, W_{hh})：权重矩阵  </li>
+<li>(b_h)：偏置  </li>
+<li>(\sigma_h)：激活函数（如 tanh 或 ReLU）</li>
+</ul>
+<p>输出：<br>[<br>y_t &#x3D; \sigma_y \big( W_{hy} h_t + b_y \big)<br>]</p>
+<ul>
+<li>(y_t)：当前时间步输出  </li>
+<li>(W_{hy})：输出权重矩阵  </li>
+<li>(\sigma_y)：输出激活函数（如 softmax）</li>
+</ul>
+<hr>
+<h2 id="2-RNN-网络结构"><a href="#2-RNN-网络结构" class="headerlink" title="2. RNN 网络结构"></a>2. RNN 网络结构</h2><p>输入序列：<br>[<br>x_1, x_2, \dots, x_T<br>]</p>
+<p>隐藏状态序列：<br>[<br>h_1, h_2, \dots, h_T<br>]</p>
+<p>输出序列：<br>[<br>y_1, y_2, \dots, y_T<br>]</p>
+<ul>
+<li>每个隐藏状态 (h_t) 都共享权重 (W_{xh}, W_{hh}, W_{hy}) → 参数复用特性</li>
+</ul>
+<hr>
+<h2 id="3-激活函数"><a href="#3-激活函数" class="headerlink" title="3. 激活函数"></a>3. 激活函数</h2><table>
+<thead>
+<tr>
+<th>激活函数</th>
+<th>公式</th>
+<th>使用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Tanh</td>
+<td>(\tanh(x))</td>
+<td>隐藏状态输出，范围 [-1,1]</td>
+</tr>
+<tr>
+<td>ReLU</td>
+<td>(\max(0, x))</td>
+<td>隐藏状态，避免梯度消失</td>
+</tr>
+<tr>
+<td>Softmax</td>
+<td>(\frac{e^{x_i}}{\sum_j e^{x_j}})</td>
+<td>分类输出层</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="4-损失函数（Loss-Function）"><a href="#4-损失函数（Loss-Function）" class="headerlink" title="4. 损失函数（Loss Function）"></a>4. 损失函数（Loss Function）</h2><ul>
+<li><p>分类任务：交叉熵<br>[<br>L &#x3D; - \sum_{t&#x3D;1}^{T} \sum_{i&#x3D;1}^{K} y_{t,i} \log \hat{y}_{t,i}<br>]</p>
+</li>
+<li><p>回归任务：均方误差（MSE）<br>[<br>L &#x3D; \frac{1}{T} \sum_{t&#x3D;1}^{T} (\hat{y}_t - y_t)^2<br>]</p>
+</li>
+</ul>
+<hr>
+<h1 id="递归神经网络结构示例（Elman-RNN）"><a href="#递归神经网络结构示例（Elman-RNN）" class="headerlink" title="递归神经网络结构示例（Elman RNN）"></a>递归神经网络结构示例（Elman RNN）</h1><h2 id="1-典型-RNN-结构"><a href="#1-典型-RNN-结构" class="headerlink" title="1. 典型 RNN 结构"></a>1. 典型 RNN 结构</h2><ul>
+<li>序列长度 (T&#x3D;3)，输入维度 (D&#x3D;2)，隐藏层维度 (H&#x3D;4)，输出维度 (O&#x3D;2)</li>
+</ul>
+<p>输入序列: x1, x2, x3 (T x D)<br>↓<br>循环隐藏层: h1, h2, h3 (H)<br>↓<br>输出层: y1, y2, y3 (O)</p>
+<h3 id="各层输出形状"><a href="#各层输出形状" class="headerlink" title="各层输出形状"></a>各层输出形状</h3><table>
+<thead>
+<tr>
+<th>层</th>
+<th>输出形状</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>输入层</td>
+<td>T x D</td>
+</tr>
+<tr>
+<td>RNN隐藏层</td>
+<td>T x H</td>
+</tr>
+<tr>
+<td>输出层</td>
+<td>T x O</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="2-循环隐藏层-RNN-Layer"><a href="#2-循环隐藏层-RNN-Layer" class="headerlink" title="2. 循环隐藏层 (RNN Layer)"></a>2. 循环隐藏层 (RNN Layer)</h2><p>隐藏状态计算公式：<br>[<br>h_t &#x3D; \sigma_h \big( W_{xh} x_t + W_{hh} h_{t-1} + b_h \big)<br>]</p>
+<ul>
+<li>(x_t)：当前时间步输入 (1 x D)  </li>
+<li>(h_{t-1})：上一时间步隐藏状态 (1 x H)  </li>
+<li>(W_{xh})：输入到隐藏权重矩阵 (D x H)  </li>
+<li>(W_{hh})：隐藏到隐藏权重矩阵 (H x H)  </li>
+<li>(b_h)：隐藏层偏置 (1 x H)  </li>
+<li>(\sigma_h)：激活函数（tanh &#x2F; ReLU）  </li>
+<li>输出形状：1 x H</li>
+</ul>
+<hr>
+<h2 id="3-输出层-Output-Layer"><a href="#3-输出层-Output-Layer" class="headerlink" title="3. 输出层 (Output Layer)"></a>3. 输出层 (Output Layer)</h2><p>输出计算公式：<br>[<br>y_t &#x3D; \sigma_y \big( W_{hy} h_t + b_y \big)<br>]</p>
+<ul>
+<li>(W_{hy})：隐藏到输出权重矩阵 (H x O)  </li>
+<li>(b_y)：输出层偏置 (1 x O)  </li>
+<li>(\sigma_y)：输出激活函数（softmax &#x2F; 线性）  </li>
+<li>输出形状：1 x O</li>
+</ul>
+<hr>
+<h2 id="4-Python-前向传播示例"><a href="#4-Python-前向传播示例" class="headerlink" title="4. Python 前向传播示例"></a>4. Python 前向传播示例</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 参数</span></span><br><span class="line">T, D, H, O = <span class="number">3</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 输入序列 (3 时间步，每步 2 维)</span></span><br><span class="line">X = np.array([[<span class="number">0.1</span>,<span class="number">0.2</span>],[<span class="number">0.2</span>,<span class="number">0.1</span>],[<span class="number">0.3</span>,<span class="number">0.3</span>]])</span><br><span class="line">y_true = np.array([[<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>]])  <span class="comment"># one-hot 编码</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 权重初始化</span></span><br><span class="line">np.random.seed(<span class="number">42</span>)</span><br><span class="line">Wxh = np.random.randn(D,H)  <span class="comment"># 输入→隐藏</span></span><br><span class="line">Whh = np.random.randn(H,H)  <span class="comment"># 隐藏→隐藏</span></span><br><span class="line">Why = np.random.randn(H,O)  <span class="comment"># 隐藏→输出</span></span><br><span class="line">bh = np.zeros((<span class="number">1</span>,H))</span><br><span class="line">by = np.zeros((<span class="number">1</span>,O))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 激活函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">tanh</span>(<span class="params">x</span>): </span><br><span class="line">    <span class="keyword">return</span> np.tanh(x)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">softmax</span>(<span class="params">x</span>):</span><br><span class="line">    exp_x = np.exp(x - np.<span class="built_in">max</span>(x, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>))</span><br><span class="line">    <span class="keyword">return</span> exp_x / exp_x.<span class="built_in">sum</span>(axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 前向传播</span></span><br><span class="line">h_prev = np.zeros((<span class="number">1</span>,H))</span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">range</span>(T):</span><br><span class="line">    x_t = X[t:t+<span class="number">1</span>]</span><br><span class="line">    h_t = tanh(x_t @ Wxh + h_prev @ Whh + bh)</span><br><span class="line">    y_t = softmax(h_t @ Why + by)</span><br><span class="line">    h_prev = h_t</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;t=<span class="subst">&#123;t&#125;</span>, 输出: <span class="subst">&#123;y_t&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">William Watson</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2025/11/05/deeplearning/3.%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">http://example.com/2025/11/05/deeplearning/3.深度学习笔记/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://example.com" target="_blank">EMinimalism</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/python/">python</a></div><div class="post-share"><div class="social-share" data-image="https://i.mji.rip/2025/11/05/c3c13228b3e105d1eae84e45fe7b7bfa.jpeg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2025/11/05/deeplearning/2.%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="机器学习笔记"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://i.mji.rip/2025/11/05/9068bca6efc3ca8edebe46386a16f2e5.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">机器学习笔记</div></div><div class="info-2"><div class="info-item-1">机器学习基础的笔记，可以不看</div></div></div></a><a class="pagination-related" href="/2025/11/05/deeplearning/4.0.pytorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0--%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99%E5%92%8C%E8%A7%84%E5%88%92/" title="Pytorch学习笔记--学习资料和规划"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://i.mji.rip/2025/11/05/5fbd477924d07b52f5749c592ed838cf.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Pytorch学习笔记--学习资料和规划</div></div><div class="info-2"><div class="info-item-1">Pytorch的一些学习资料</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/11/05/deeplearning/0.python%E7%8E%AF%E5%A2%83/" title="Python环境配置"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic.rmb.bdstatic.com/bjh/news/36cddb12ce58c2f0d5910bfaed3a055c7423.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-11-05</div><div class="info-item-2">Python环境配置</div></div><div class="info-2"><div class="info-item-1">Python环境配置</div></div></div></a><a class="pagination-related" href="/2025/11/05/deeplearning/1.python%E5%9F%BA%E7%A1%80%E7%AC%94%E8%AE%B0/" title="Python基础笔记"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://i.mji.rip/2025/11/05/911566d9bf84841d540b13be1578a99d.jpeg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-11-05</div><div class="info-item-2">Python基础笔记</div></div><div class="info-2"><div class="info-item-1">Python基础的一些笔记</div></div></div></a><a class="pagination-related" href="/2025/11/05/deeplearning/2.%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="机器学习笔记"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://i.mji.rip/2025/11/05/9068bca6efc3ca8edebe46386a16f2e5.webp" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-11-05</div><div class="info-item-2">机器学习笔记</div></div><div class="info-2"><div class="info-item-1">机器学习基础的笔记，可以不看</div></div></div></a><a class="pagination-related" href="/2025/11/05/deeplearning/4.0.pytorch%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0--%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99%E5%92%8C%E8%A7%84%E5%88%92/" title="Pytorch学习笔记--学习资料和规划"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://i.mji.rip/2025/11/05/5fbd477924d07b52f5749c592ed838cf.jpeg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-11-05</div><div class="info-item-2">Pytorch学习笔记--学习资料和规划</div></div><div class="info-2"><div class="info-item-1">Pytorch的一些学习资料</div></div></div></a><a class="pagination-related" href="/2025/11/05/deeplearning/4.1.pytorch%E7%AC%94%E8%AE%B0--%E5%B0%8F%E5%9C%9F%E5%A0%86/" title="小土堆pytorch"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://i.mji.rip/2025/11/05/28d654e5afbc868c7aad48b89ad0ecbb.jpeg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-11-05</div><div class="info-item-2">小土堆pytorch</div></div><div class="info-2"><div class="info-item-1">小土堆pytorch框架搭建学习</div></div></div></a><a class="pagination-related" href="/2025/11/05/deeplearning/4.2.pytorch%E7%AC%94%E8%AE%B0--%E9%B1%BC%E4%B9%A6/" title="深度学习fishbook"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://q3.itc.cn/q_70/images03/20240819/a1268c5992c545a391445be6df6795a5.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-11-05</div><div class="info-item-2">深度学习fishbook</div></div><div class="info-2"><div class="info-item-1">鱼书，深度学习入门：基于Python的理论与实现，最佳的深度学习入门书籍</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">William Watson</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">29</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/william-watson1024" target="_blank" title="Github"><i class="fab fa-github" style="color: #hdhfbb;"></i></a><a class="social-icon" href="tencent://AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=990764375&amp;website=www.oicqzone.com" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="mailto:williamwatson1024@gmail.com" target="_blank" title="Email"><i class="fa fa-envelope" style="color: #000000;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">人至少要有一个梦想，有一个理由去坚强，心若没有栖息的地方，到哪里都是在流浪。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80"><span class="toc-number">1.</span> <span class="toc-text">数学基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0-1-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%9F%BA%E7%A1%80"><span class="toc-number">1.1.</span> <span class="toc-text">0.1 线性代数基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0-2-%E5%BE%AE%E7%A7%AF%E5%88%86%E5%9F%BA%E7%A1%80"><span class="toc-number">1.2.</span> <span class="toc-text">0.2 微积分基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0-3-%E6%A6%82%E7%8E%87%E4%B8%8E%E7%BB%9F%E8%AE%A1%E5%9F%BA%E7%A1%80"><span class="toc-number">1.3.</span> <span class="toc-text">0.3 概率与统计基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0-4-%E7%94%A8numpy%E5%AE%9E%E7%8E%B0%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92"><span class="toc-number">1.4.</span> <span class="toc-text">0.4 用numpy实现线性回归</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80"><span class="toc-number">2.</span> <span class="toc-text">神经网络基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%A6%82%E5%BF%B5"><span class="toc-number">2.1.</span> <span class="toc-text">神经网络概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A5%9E%E7%BB%8F%E5%85%83%EF%BC%88Neuron%EF%BC%89"><span class="toc-number">2.1.1.</span> <span class="toc-text">神经元（Neuron）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%82%EF%BC%88Layer%EF%BC%89"><span class="toc-number">2.1.2.</span> <span class="toc-text">层（Layer）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84"><span class="toc-number">2.1.3.</span> <span class="toc-text">网络结构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0%EF%BC%88Activation-Function%EF%BC%89"><span class="toc-number">2.2.</span> <span class="toc-text">激活函数（Activation Function）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%EF%BC%88Loss-Function%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">损失函数（Loss Function）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E4%B8%8E%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%EF%BC%88GD-SGD%EF%BC%89"><span class="toc-number">2.4.</span> <span class="toc-text">优化与梯度下降（GD &#x2F; SGD）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8numpy%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%89%8D%E9%A6%88%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-number">2.5.</span> <span class="toc-text">用numpy实现一个简单的前馈神经网络</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80"><span class="toc-number">3.</span> <span class="toc-text">卷积神经网络基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%B7%E7%A7%AF%E5%B1%82%EF%BC%88Convolutional-Layer%EF%BC%89"><span class="toc-number">3.1.</span> <span class="toc-text">卷积层（Convolutional Layer）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="toc-number">3.1.1.</span> <span class="toc-text">核心概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%B7%E7%A7%AF%E5%B1%82%E5%8F%82%E6%95%B0"><span class="toc-number">3.1.2.</span> <span class="toc-text">卷积层参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0"><span class="toc-number">3.2.</span> <span class="toc-text">激活函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B1%A0%E5%8C%96%E5%B1%82%EF%BC%88Pooling-Layer%EF%BC%89"><span class="toc-number">3.3.</span> <span class="toc-text">池化层（Pooling Layer）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%A8%E8%BF%9E%E6%8E%A5%E5%B1%82%EF%BC%88Fully-Connected-Layer%EF%BC%89"><span class="toc-number">3.4.</span> <span class="toc-text">全连接层（Fully Connected Layer）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E7%A4%BA%E4%BE%8B"><span class="toc-number">3.5.</span> <span class="toc-text">卷积神经网络结构示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%90%84%E5%B1%82%E8%BE%93%E5%87%BA%E5%85%AC%E5%BC%8F"><span class="toc-number">3.6.</span> <span class="toc-text">卷积神经网络各层输出公式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%8D%B7%E7%A7%AF%E5%B1%82-Convolution-Layer"><span class="toc-number">3.6.1.</span> <span class="toc-text">1. 卷积层 (Convolution Layer)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%B1%A0%E5%8C%96%E5%B1%82-Pooling-Layer"><span class="toc-number">3.6.2.</span> <span class="toc-text">2. 池化层 (Pooling Layer)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%89%81%E5%B9%B3%E5%8C%96%E5%B1%82-Flatten-Layer"><span class="toc-number">3.6.3.</span> <span class="toc-text">3. 扁平化层 (Flatten Layer)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%85%A8%E8%BF%9E%E6%8E%A5%E5%B1%82-Fully-Connected-Layer"><span class="toc-number">3.6.4.</span> <span class="toc-text">4. 全连接层 (Fully Connected Layer)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E8%BE%93%E5%87%BA%E5%B1%82-Output-Layer"><span class="toc-number">3.6.5.</span> <span class="toc-text">5. 输出层 (Output Layer)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%80%92%E5%BD%92%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80%EF%BC%88RNN%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">递归神经网络基础（RNN）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-RNN-%E6%A6%82%E5%BF%B5"><span class="toc-number">4.1.</span> <span class="toc-text">1. RNN 概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%92%E5%BD%92%E5%8D%95%E5%85%83%E5%85%AC%E5%BC%8F"><span class="toc-number">4.1.1.</span> <span class="toc-text">递归单元公式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-RNN-%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84"><span class="toc-number">4.2.</span> <span class="toc-text">2. RNN 网络结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0"><span class="toc-number">4.3.</span> <span class="toc-text">3. 激活函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%EF%BC%88Loss-Function%EF%BC%89"><span class="toc-number">4.4.</span> <span class="toc-text">4. 损失函数（Loss Function）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%80%92%E5%BD%92%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E7%A4%BA%E4%BE%8B%EF%BC%88Elman-RNN%EF%BC%89"><span class="toc-number">5.</span> <span class="toc-text">递归神经网络结构示例（Elman RNN）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%85%B8%E5%9E%8B-RNN-%E7%BB%93%E6%9E%84"><span class="toc-number">5.1.</span> <span class="toc-text">1. 典型 RNN 结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%84%E5%B1%82%E8%BE%93%E5%87%BA%E5%BD%A2%E7%8A%B6"><span class="toc-number">5.1.1.</span> <span class="toc-text">各层输出形状</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%BE%AA%E7%8E%AF%E9%9A%90%E8%97%8F%E5%B1%82-RNN-Layer"><span class="toc-number">5.2.</span> <span class="toc-text">2. 循环隐藏层 (RNN Layer)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%BE%93%E5%87%BA%E5%B1%82-Output-Layer"><span class="toc-number">5.3.</span> <span class="toc-text">3. 输出层 (Output Layer)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Python-%E5%89%8D%E5%90%91%E4%BC%A0%E6%92%AD%E7%A4%BA%E4%BE%8B"><span class="toc-number">5.4.</span> <span class="toc-text">4. Python 前向传播示例</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/10/%E8%87%B4%E8%B0%A2/%E8%87%B4%E8%B0%A2/" title="致谢">致谢</a><time datetime="2026-08-10T23:25:00.000Z" title="发表于 2026-08-10 23:25:00">2026-08-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/08/10/hello-world/" title="Hello World"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img1.baidu.com/it/u=406430186,1764909119&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=838&amp;h=500" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2026/08/10/hello-world/" title="Hello World">Hello World</a><time datetime="2026-08-10T14:37:27.899Z" title="发表于 2026-08-10 14:37:27">2026-08-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/09/%E7%88%AC%E8%99%AB/%E7%9F%A5%E8%AF%86%E6%98%9F%E7%90%83/" title="TO_FZU_保研er"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img1.baidu.com/it/u=560204068,2367226352&amp;fm=253&amp;fmt=auto&amp;app=120&amp;f=JPEG?w=1265&amp;h=800" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="TO_FZU_保研er"/></a><div class="content"><a class="title" href="/2026/03/09/%E7%88%AC%E8%99%AB/%E7%9F%A5%E8%AF%86%E6%98%9F%E7%90%83/" title="TO_FZU_保研er">TO_FZU_保研er</a><time datetime="2026-03-09T18:54:47.000Z" title="发表于 2026-03-09 18:54:47">2026-03-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/12/18/%E6%94%BB%E7%95%A5/TO_FZU_%E4%BF%9D%E7%A0%94er/" title="TO_FZU_保研er"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img1.baidu.com/it/u=560204068,2367226352&amp;fm=253&amp;fmt=auto&amp;app=120&amp;f=JPEG?w=1265&amp;h=800" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="TO_FZU_保研er"/></a><div class="content"><a class="title" href="/2025/12/18/%E6%94%BB%E7%95%A5/TO_FZU_%E4%BF%9D%E7%A0%94er/" title="TO_FZU_保研er">TO_FZU_保研er</a><time datetime="2025-12-18T23:11:47.000Z" title="发表于 2025-12-18 23:11:47">2025-12-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/11/05/deeplearning/0.python%E7%8E%AF%E5%A2%83/" title="Python环境配置"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic.rmb.bdstatic.com/bjh/news/36cddb12ce58c2f0d5910bfaed3a055c7423.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python环境配置"/></a><div class="content"><a class="title" href="/2025/11/05/deeplearning/0.python%E7%8E%AF%E5%A2%83/" title="Python环境配置">Python环境配置</a><time datetime="2025-11-05T23:25:00.000Z" title="发表于 2025-11-05 23:25:00">2025-11-05</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent;"><div id="footer-wrap"><div class="copyright">&copy;2024 - 2026 By William Watson</div><div class="footer_custom_text">木秀于林,风必摧之</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: 'Z7QznhjTLEqRlaYYnPKl10v1-MdYXbMMI',
+      appKey: 'nx1MJzlMV5i2RsTSBuFS3y39',
+      avatar: 'monsterid',
+      serverURLs: 'https://z7qznhjt.api.lncldglobal.com',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !true) {
+    if (true) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><script src="https://cdn.jsdelivr.net/npm/blueimp-md5/js/md5.min.js"></script><script>window.newestComments = {
+  changeContent: content => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<code>.*?<\/code>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g, "") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0, 150) + '...'
+    }
+    return content
+  },
+
+  generateHtml: (array, ele) => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class="aside-list-item">'
+
+        if (true && array[i].avatar) {
+          const imgAttr = 'data-lazy-src'
+          const lazyloadNative = ''
+          result += `<a href="${array[i].url}" class="thumbnail"><img ${imgAttr}="${array[i].avatar}" alt="${array[i].nick}" ${lazyloadNative}></a>`
+        }
+
+        result += `<div class="content">
+        <a class="comment" href="${array[i].url}" title="${array[i].content}">${array[i].content}</a>
+        <div class="name"><span>${array[i].nick} / </span><time datetime="${array[i].date}">${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '暂无评论'
+    }
+
+    ele.innerHTML = result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh(ele)
+  },
+
+  newestCommentInit: (name, getComment) => {
+    const $dom = document.querySelector('#card-newest-comments .aside-list')
+    if ($dom) {
+      const data = btf.saveToLocal.get(name)
+      if (data) {
+        newestComments.generateHtml(JSON.parse(data), $dom)
+      } else {
+        getComment($dom)
+      }
+    }
+  },
+
+  run: (name, getComment) => {
+    newestComments.newestCommentInit(name, getComment)
+    btf.addGlobalFn('pjaxComplete', () => newestComments.newestCommentInit(name, getComment), name)
+  }
+}</script><script>window.addEventListener('load', () => {
+  const keyName = 'valine-newest-comments'
+  const { changeContent, generateHtml, run } = window.newestComments
+
+  const getIcon = (icon, mail) => {
+    if (icon) return icon
+    let defaultIcon = '?d=monsterid'
+    let iconUrl = `https://gravatar.loli.net/avatar/${md5(mail.toLowerCase()) + defaultIcon}`
+    return iconUrl
+  }
+
+  const getComment = ele => {
+    const serverURL = 'https://z7qznhjt.api.lncldglobal.com'
+
+    var settings = {
+      "method": "GET",
+      "headers": {
+        "X-LC-Id": 'Z7QznhjTLEqRlaYYnPKl10v1-MdYXbMMI',
+        "X-LC-Key": 'nx1MJzlMV5i2RsTSBuFS3y39',
+        "Content-Type": "application/json"
+      },
+    }
+
+    fetch(`${serverURL}/1.1/classes/Comment?limit=6&order=-createdAt`,settings)
+      .then(response => response.json())
+      .then(data => {
+        const valineArray = data.results.map(e => {
+          return {
+            'avatar': getIcon(e.QQAvatar, e.mail),
+            'content': changeContent(e.comment),
+            'nick': e.nick,
+            'url': e.url + '#' + e.objectId,
+            'date': e.updatedAt,
+          }
+        })
+        btf.saveToLocal.set(keyName, JSON.stringify(valineArray), 10/(60*24))
+        generateHtml(valineArray, ele)
+      }).catch(e => {
+        console.error(e)
+        ele.textContent= "无法获取评论，请确认相关配置是否正确"
+      })
+  }
+
+  run(keyName, getComment)
+})</script><canvas id="universe"></canvas><div class="aplayer no-destroy" data-id="13378306294" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="true" data-lrcType="-1"> </div><script src="/js/universe.js"></script><script defer src="/live2d-widget/autoload.js"></script><script id="canvas_nest" defer="defer" color="162,161,103" opacity="1" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="Everything,Will,Be,Fine" data-fontsize="15px" data-random="false" async="async"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>(() => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"]):not([href="/movies/"]):not([href="/artitalk/"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => fn())
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      window.location.href = e.request.responseURL
+    }
+  })
+})()</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div><script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/lite/builds/browser.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script></div></div></body></html>
